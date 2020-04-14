@@ -42,7 +42,7 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f --namespace dev -'
                //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
                //  sh './jenkins/scripts/kill.sh'
             }
@@ -57,12 +57,5 @@ pipeline {
                //  sh './jenkins/scripts/kill.sh'
             }
         }
-
-      // stage('Deploy to Cluster') {
-      //    when { anyOf { branch 'dev'; branch 'test' } }
-      //     steps {
-      //               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
-      //     }
-      // }
    }
 }
