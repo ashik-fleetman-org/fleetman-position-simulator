@@ -13,13 +13,13 @@ pipeline {
    stages {
       stage('Preparation') {
          steps {
-            echo 'hello'
+            cleanWs()
+            git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
          }
       }
-      stage('debug') {
-         steps {
+   stage('debug') {
+      steps {
             echo $GIT_BRANCH
-         }
       }
       stage('Build') {
          steps {
