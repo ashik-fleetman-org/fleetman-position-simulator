@@ -42,7 +42,7 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f --namespace=dev -'
+                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f --namespace=dev'
                //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
                //  sh './jenkins/scripts/kill.sh'
             }
