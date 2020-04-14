@@ -19,7 +19,7 @@ pipeline {
       }
    stage('debug') {
          steps {
-            echo $GIT_BRANCH
+            echo '$GIT_BRANCH'
          }
       }
       stage('Build') {
