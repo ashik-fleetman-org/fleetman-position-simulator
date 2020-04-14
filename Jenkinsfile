@@ -37,12 +37,32 @@ pipeline {
            sh 'docker image build -t ${REPOSITORY_TAG} .'
          }
       }
+      stage('Deliver for development') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+               //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
+               //  sh './jenkins/scripts/kill.sh'
+            }
+        }
+        stage('Deploy for production') {
+            when {
+                branch 'master'
+            }
+            steps {
+               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+               //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
+               //  sh './jenkins/scripts/kill.sh'
+            }
+        }
 
-      stage('Deploy to Cluster') {
-         when { anyOf { branch 'dev'; branch 'test' } }
-          steps {
-                    sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
-          }
-      }
+      // stage('Deploy to Cluster') {
+      //    when { anyOf { branch 'dev'; branch 'test' } }
+      //     steps {
+      //               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+      //     }
+      // }
    }
 }
