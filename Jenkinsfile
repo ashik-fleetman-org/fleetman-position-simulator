@@ -18,8 +18,7 @@ pipeline {
       }
       stage('debug') {
          steps {
-            cleanWs()
-            git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
+            echo $GIT_BRANCH
          }
       }
       stage('Build') {
@@ -35,13 +34,7 @@ pipeline {
       }
 
       stage('Deploy to Cluster') {
-<<<<<<< HEAD
-         when{
-            branch 'dev'
-         }
-=======
          when { anyOf { branch 'dev'; branch 'test' } }
->>>>>>> 61f53470d8ea5c1980f8c5b4a31e288ef1cf6971
           steps {
                     sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
           }
