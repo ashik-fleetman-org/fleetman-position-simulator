@@ -19,7 +19,7 @@ pipeline {
       }
    stage('debug') {
          steps {
-            // echo "The build number is ${env.BUILD_NUMBER}"
+            echo "The build number is ${env.BUILD_NUMBER}"
             echo "The Commit ID  is ${GIT_COMMIT}"
          }
       }
