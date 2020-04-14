@@ -18,8 +18,9 @@ pipeline {
          }
       }
    stage('debug') {
-      steps {
+         steps {
             echo $GIT_BRANCH
+         }
       }
       stage('Build') {
          steps {
