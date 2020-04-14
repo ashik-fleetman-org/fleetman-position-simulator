@@ -47,12 +47,22 @@ pipeline {
                //  sh './jenkins/scripts/kill.sh'
             }
         }
-        stage('Deploy for production') {
+        stage('Deploy for Test') {
+            when {
+                branch 'test'
+            }
+            steps {
+               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f - --namespace=test'
+               //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
+               //  sh './jenkins/scripts/kill.sh'
+            }
+        }
+         stage('Deploy for Prod') {
             when {
                 branch 'master'
             }
             steps {
-               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
+               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f - --namespace=prod'
                //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
                //  sh './jenkins/scripts/kill.sh'
             }
