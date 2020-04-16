@@ -17,6 +17,15 @@ pipeline {
             git credentialsId: 'GitHub', url: "https://github.com/${ORGANIZATION_NAME}/${SERVICE_NAME}"
          }
       }
+   stage('debug') {
+         steps {
+            echo "The build number is ${env.BUILD_NUMBER}"
+            echo "The Branch ID  is ${GIT_BRANCH}"
+            echo "The Commit ID  is ${GIT_COMMIT}"
+            // echo "The Author name is ${GIT_AUTHOR_NAME}"
+            // echo "The Commiter name is ${GIT_COMMITTER_NAME}"
+         }
+      }
       stage('Build') {
          steps {
             sh '''mvn clean package'''
@@ -28,14 +37,35 @@ pipeline {
            sh 'docker image build -t ${REPOSITORY_TAG} .'
          }
       }
-
-      stage('Deploy to Cluster') {
-         when{
-            branch 'master'
-         }
-          steps {
-                    sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f -'
-          }
-      }
+      stage('Deliver for development') {
+            when {
+                branch 'dev'
+            }
+            steps {
+                sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f - --namespace=dev'
+               //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
+               //  sh './jenkins/scripts/kill.sh'
+            }
+        }
+        stage('Deploy for Test') {
+            when {
+                branch 'test'
+            }
+            steps {
+               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f - --namespace=test'
+               //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
+               //  sh './jenkins/scripts/kill.sh'
+            }
+        }
+         stage('Deploy for Prod') {
+            when {
+                branch 'master'
+            }
+            steps {
+               sh 'envsubst < ${WORKSPACE}/deploy.yaml | kubectl apply -f - --namespace=prod'
+               //  input message: 'Finished using the web site? (Click "Proceed" to continue)'
+               //  sh './jenkins/scripts/kill.sh'
+            }
+        }
    }
 }
