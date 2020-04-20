@@ -28,6 +28,9 @@ pipeline {
       }
       stage('Build') {
          steps {
+            sh '''whoami'''
+            sh '''pwd'''
+            sh '''ls'''
             sh '''mvn clean package'''
          }
       }
