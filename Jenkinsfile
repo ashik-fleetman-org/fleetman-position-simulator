@@ -33,6 +33,7 @@ pipeline {
             sh '''whoami'''
             sh '''pwd'''
             sh '''ls'''
+            sh '''hostname'''
             sh '''mvn clean package'''
          }
       }
