@@ -1,5 +1,7 @@
 pipeline {
-   agent any
+   agent{
+   docker { image 'maven:3-alpine' }
+   }
 
    environment {
      // You must set the following environment variables
