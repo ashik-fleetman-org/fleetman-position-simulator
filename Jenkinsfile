@@ -18,7 +18,7 @@ pipeline {
          }
       }
       stage('Build') {
-         withMaven (
+         withMaven(
               // Maven installation declared in the Jenkins "Global Tool Configuration"
               maven: 'maven-3',
               // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
